@@ -7,3 +7,4 @@ target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(custom-main-tests PRIVATE Catch2::Catch2)
 
 set(CMAKE_CXX_STANDARD 23)
+add_executable(elsa_fyp main.cpp)
