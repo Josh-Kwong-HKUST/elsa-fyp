@@ -4,7 +4,7 @@ project(elsa_fyp)
 
 add_subdirectory(client)
 
-if(BUILD_TESTING)
+if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
