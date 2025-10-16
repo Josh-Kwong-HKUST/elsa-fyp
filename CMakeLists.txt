@@ -7,6 +7,7 @@ add_subdirectory(client)
 
 if(BUILD_TESTS)
     enable_testing()
+    include(CTest)
     add_subdirectory(tests)
 endif()
 
