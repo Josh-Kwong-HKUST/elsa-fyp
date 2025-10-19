@@ -16,3 +16,6 @@ set_target_properties(client PROPERTIES
         CXX_STANDARD_REQUIRED ON
 )
 
+if(BUILD_TESTS)
+    add_subdirectory(unit_test)
+endif()
