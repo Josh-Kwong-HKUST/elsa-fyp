@@ -1,7 +1,7 @@
 find_package(Catch2 3 REQUIRED)
 include(Catch)
 
-add_executable(unit_test test.cpp)
+add_executable(sdk_unit_test test.cpp)
 
 # find packages required for QuickFIX
 find_package(PkgConfig REQUIRED)
@@ -13,16 +13,16 @@ find_package(ZLIB REQUIRED)
 pkg_check_modules(QuickFIX REQUIRED quickfix)
 
 # Link QuickFIX
-target_link_libraries(unit_test PUBLIC
+target_link_libraries(sdk_unit_test PUBLIC
         client_sdk
         ${QuickFIX_LIBRARIES}
         Threads::Threads
         LibXml2::LibXml2
         ZLIB::ZLIB
 )
-target_include_directories(unit_test PUBLIC ${QuickFIX_INCLUDE_DIRS})
-target_compile_definitions(unit_test PUBLIC ${QuickFIX_CFLAGS_OTHER})
+target_include_directories(sdk_unit_test PUBLIC ${QuickFIX_INCLUDE_DIRS})
+target_compile_definitions(sdk_unit_test PUBLIC ${QuickFIX_CFLAGS_OTHER})
 # link to catch2 library
-target_link_libraries(unit_test PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(sdk_unit_test PRIVATE Catch2::Catch2WithMain)
 
-catch_discover_tests(unit_test)
+catch_discover_tests(sdk_unit_test)
