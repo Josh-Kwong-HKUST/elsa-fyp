@@ -4,9 +4,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(elsa_fyp_client_sdk)
 
 add_library(client_sdk
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/client.cpp
+        src/fix_client.cpp
         src/application.cpp
-        include/application.h
 )
 target_include_directories(client_sdk
         PUBLIC

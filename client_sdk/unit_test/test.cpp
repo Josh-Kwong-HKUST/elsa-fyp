@@ -1,17 +1,18 @@
 #include <catch2/catch_test_macros.hpp>
-#include "../include/application.h"
-#include "../include/client.h"
+#include "../include/fix_client.h"
+#include <iostream>
 
 int test_fix() {
     try {
-        auto app = new Application();
+        auto client = new FixClient("/home/josh/repo/elsa-fyp/client_sdk/example_config.cfg");
+        client->connect();
         return 0;
     } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
         return -1;
     }
 }
 
 TEST_CASE("QuickFIX unit_test", "[QuickFIX]") {
-    REQUIRE( Client::add(1, 2) == 3 );
     REQUIRE( test_fix() == 0 );
 }
