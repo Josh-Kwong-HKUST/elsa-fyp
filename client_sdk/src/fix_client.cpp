@@ -12,9 +12,7 @@ FixClient::FixClient(const std::string & setting_file) {
     _initiator = std::unique_ptr<FIX::Initiator>(new FIX::SocketInitiator(application, file_store_factory, *_session_setting));
 }
 
-FixClient::~FixClient() {
-
-}
+FixClient::~FixClient() = default;
 
 void FixClient::connect() {
     _initiator->start();

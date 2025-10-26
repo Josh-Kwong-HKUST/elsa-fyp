@@ -1,9 +1,11 @@
 find_package(Catch2 3 REQUIRED)
 include(Catch)
 
-add_executable(integration_test test.cpp)
+add_executable(test_sdk_with_server test_sdk_with_server.cpp
+        test_sdk_with_server.cpp)
+target_link_libraries(test_sdk_with_server PUBLIC client_sdk)
 
 # link to catch2 library
-target_link_libraries(integration_test PRIVATE Catch2::Catch2WithMain)
+#target_link_libraries(test_sdk_with_server PRIVATE Catch2::Catch2WithMain)
 
-catch_discover_tests(integration_test)
+#catch_discover_tests(test_sdk_with_server)

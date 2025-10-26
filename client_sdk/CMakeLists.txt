@@ -5,7 +5,6 @@ project(elsa_fyp_client_sdk)
 
 add_library(client_sdk
         src/fix_client.cpp
-        src/application.cpp
 )
 target_include_directories(client_sdk
         PUBLIC
