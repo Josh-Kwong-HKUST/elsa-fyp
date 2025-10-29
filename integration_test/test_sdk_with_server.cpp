@@ -15,7 +15,7 @@ int main() {
     std::cout << "Server started" << std::endl;
 
     const auto client = new FixClient("/home/josh/repo/elsa-fyp/client_sdk/example_config_client.cfg");
-    client->connect();
+    client->connect(5);
     client->submit_order(Order("test_ticker", 1.0, 10.0, OrderSide::BUY, OrderType::LIMIT, TimeInForce::GTC));
     std::cout << "Client started" << std::endl;
     std::cout << "Enter any key to exit" << std::endl;
