@@ -15,12 +15,13 @@ private:
 
 public:
     explicit FixClient(const std::string&);
-    ~FixClient();
     void connect(const int&) const;
     void disconnect();
+    bool is_connected() const;
     [[nodiscard]] FIX::SessionID get_session_id() const;
     // methods to interact with market
-    bool submit_order(const Order& order) const;
+    bool submit_market_order(const std::string&, const double&, const OrderSide&, const std::string& = "") const;
+    bool submit_limit_order(const std::string&, const double&, const double&, const OrderSide&, const TimeInForce&, const std::string& = "") const;
 
 private:
     void onCreate(const FIX::SessionID &) override {};

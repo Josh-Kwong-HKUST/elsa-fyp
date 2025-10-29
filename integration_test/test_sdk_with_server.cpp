@@ -16,10 +16,12 @@ int main() {
 
     const auto client = new FixClient("/home/josh/repo/elsa-fyp/client_sdk/example_config_client.cfg");
     client->connect(5);
-    client->submit_order(Order("test_ticker", 1.0, 10.0, OrderSide::BUY, OrderType::LIMIT, TimeInForce::GTC));
+    bool res = client->submit_limit_order("test_ticker", 1.0, 10.0, OrderSide::BUY, TimeInForce::GTC, "joshorder");
+    std::cout << "Success: " << res << std::endl;
     std::cout << "Client started" << std::endl;
     std::cout << "Enter any key to exit" << std::endl;
     std::cin.ignore();
     acceptor.stop();
     client->disconnect();
+    delete client;
 }
