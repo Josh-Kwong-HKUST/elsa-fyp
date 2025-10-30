@@ -5,13 +5,15 @@
 #include <string>
 
 #include "order.h"
+#include "server_response.h"
 #include "quickfix/SocketInitiator.h"
 #include "quickfix/fix42/NewOrderSingle.h"
 #include "quickfix/fix42/OrderCancelRequest.h"
+#include "quickfix/fix42/MessageCracker.h"
+#include "quickfix/Field.h"
 #include "quickfix/Application.h"
 
-class FixClient final : FIX::Application {
-private:
+class FixClient : FIX::Application, FIX42::MessageCracker {
     std::unique_ptr<FIX::Initiator> _initiator;
     std::atomic_bool _is_connected = false;
 
@@ -25,6 +27,10 @@ public:
     bool submit_market_order(const std::string&, const double&, const OrderSide&, const std::string& = "") const;
     bool submit_limit_order(const std::string&, const double&, const double&, const OrderSide&, const TimeInForce&, const std::string& = "") const;
     bool cancel_order(const std::string&, const OrderSide&, const std::string&) const;
+
+protected:
+    virtual void on_order_update(const ExecutionReport&) = 0;
+    virtual void on_order_cancel_rejected(const std::string&, const std::string&) = 0;
 
 private:
     void onCreate(const FIX::SessionID &) override {};
@@ -44,6 +50,9 @@ private:
     void fromApp(const FIX::Message &msg, const FIX::SessionID &session_id) override {
         std::cout << "[FixClient] fromApp:" << msg << "from session " << session_id << std::endl;
     };
+    //
+    void onMessage( const FIX42::ExecutionReport&, const FIX::SessionID& session_id) override;
+    void onMessage( const FIX42::OrderCancelReject&, const FIX::SessionID& session_id) override;
 
     // helper functions for creating requests
     static FIX42::NewOrderSingle create_new_order_fix_request(const std::string& ticker, const double& quantity, const OrderSide& side, const std::string& custom_order_id = "") {
