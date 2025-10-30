@@ -4,6 +4,9 @@
 #include "quickfix/fix42/OrderCancelRequest.h"
 #include "quickfix/fix42/NewOrderSingle.h"
 #include <iostream>
+#include "quickfix/Session.h"
+#include "quickfix/fix42/ExecutionReport.h"
+#include "quickfix/fix42/OrderCancelReject.h"
 
 class TestFixServer final : public FIX::Application, FIX42::MessageCracker {
 public:
@@ -25,7 +28,10 @@ public:
 
 private:
     void onMessage( const FIX42::NewOrderSingle& new_order, const FIX::SessionID& session_id) override {
-      std::cout << "[Server] received new order request:\n" << new_order << "\nfrom session: " << session_id << std::endl;
+        std::cout << "[Server] received new order request:\n" << new_order << "\nfrom session: " << session_id << std::endl;
+        FIX42::ExecutionReport execution_report;
+
+        FIX::Session::sendToTarget(execution_report, session_id);
     }
     void onMessage( const FIX42::OrderCancelRequest& cancel_request, const FIX::SessionID& session_id) override {
         std::cout << "[Server] received cancel order request:\n" << cancel_request << "\nfrom session: " << session_id << std::endl;

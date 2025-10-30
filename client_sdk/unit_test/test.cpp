@@ -1,10 +1,11 @@
 #include <catch2/catch_test_macros.hpp>
-#include "../include/fix_client.h"
 #include <iostream>
+
+#include "test_client.h"
 
 int test_fix() {
     try {
-        auto client = new FixClient("/home/josh/repo/elsa-fyp/client_sdk/example_config_client.cfg");
+        auto client = new TestClient("/home/josh/repo/elsa-fyp/client_sdk/example_config_client.cfg");
         client->connect(5);
         return 0;
     } catch (std::exception& e) {

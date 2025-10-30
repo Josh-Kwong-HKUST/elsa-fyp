@@ -153,7 +153,7 @@ void FixClient::onMessage(const FIX42::ExecutionReport &execution_report, const 
             break;
         }
         default: {
-            std::cout << "[FixClient] Unsupported order status received: " << execution_report << std::endl;
+            std::cout << "[FixClient] Unsupported order status received: " << order_status << std::endl;
         };
     }
     on_order_update(exec_report);

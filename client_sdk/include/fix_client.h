@@ -10,6 +10,8 @@
 #include "quickfix/fix42/NewOrderSingle.h"
 #include "quickfix/fix42/OrderCancelRequest.h"
 #include "quickfix/fix42/MessageCracker.h"
+#include "quickfix/fix42/ExecutionReport.h"
+#include "quickfix/fix42/OrderCancelReject.h"
 #include "quickfix/Field.h"
 #include "quickfix/Application.h"
 
