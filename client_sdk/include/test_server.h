@@ -61,5 +61,11 @@ private:
     }
     void onMessage( const FIX42::OrderCancelRequest& cancel_request, const FIX::SessionID& session_id) override {
         std::cout << "[Server] received cancel order request:\n" << cancel_request << "\nfrom session: " << session_id << std::endl;
+        FIX42::OrderCancelReject order_cancel_reject{};
+        FIX::ClOrdID client_order_id;
+        cancel_request.get(client_order_id);
+        order_cancel_reject.set(client_order_id);
+        order_cancel_reject.set(FIX::Text("Server rejected cancellation because the developer is testing"));
+        FIX::Session::sendToTarget(order_cancel_reject, session_id);
     }
 };
