@@ -29,8 +29,34 @@ public:
 private:
     void onMessage( const FIX42::NewOrderSingle& new_order, const FIX::SessionID& session_id) override {
         std::cout << "[Server] received new order request:\n" << new_order << "\nfrom session: " << session_id << std::endl;
-        FIX42::ExecutionReport execution_report;
-
+        FIX42::ExecutionReport execution_report{};
+        FIX::ClOrdID client_order_id;
+        FIX::Symbol symbol;
+        FIX::Side side;
+        FIX::OrderQty order_qty;
+        FIX::OrdType ord_type;
+        new_order.get(client_order_id);
+        new_order.get(symbol);
+        new_order.get(side);
+        new_order.get(order_qty);
+        new_order.get(ord_type);
+        if (FIX::Price price; new_order.isSet(price)) {
+            new_order.get(price);
+            execution_report.set(FIX::LastPx(price));
+            execution_report.set(FIX::AvgPx(price));
+        } else {
+            execution_report.set(FIX::LastPx(1.0)); // for testing only
+            execution_report.set(FIX::AvgPx(1.0));
+        }
+        execution_report.set(client_order_id);
+        execution_report.set(symbol);
+        execution_report.set(FIX::OrdStatus(FIX::OrdStatus_FILLED));
+        execution_report.set(side);
+        execution_report.set(order_qty);
+        execution_report.set(FIX::ExecType(FIX::ExecType_FILL));
+        execution_report.set(FIX::CumQty(order_qty.getValue()));
+        execution_report.set(FIX::LeavesQty(0.0));
+        execution_report.set(FIX::OrderID("OrderIdFromServer"));
         FIX::Session::sendToTarget(execution_report, session_id);
     }
     void onMessage( const FIX42::OrderCancelRequest& cancel_request, const FIX::SessionID& session_id) override {

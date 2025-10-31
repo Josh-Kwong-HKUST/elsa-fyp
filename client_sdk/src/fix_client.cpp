@@ -45,6 +45,7 @@ bool FixClient::submit_market_order(const std::string &ticker, const double &qua
     if (!is_connected()) return false;
     try {
         FIX42::NewOrderSingle new_order_fix_message = create_new_order_fix_request(ticker, quantity, side, custom_order_id);
+        new_order_fix_message.set(FIX::OrdType(FIX::OrdType_MARKET));
         FIX::Session::sendToTarget(new_order_fix_message, get_session_id());
         std::cout << "[FixClient] Market Order submitted: " << new_order_fix_message << std::endl;
         return true;
@@ -68,7 +69,7 @@ bool FixClient::submit_limit_order(const std::string &ticker, const double &pric
         new_order_fix_message.set(FIX::TimeInForce(tif));
         // leave price check for server side
         new_order_fix_message.set(FIX::Price(price));
-
+        new_order_fix_message.set(FIX::OrdType(FIX::OrdType_LIMIT));
         FIX::Session::sendToTarget(new_order_fix_message, get_session_id());
         std::cout << "[FixClient] Limit Order submitted: " << new_order_fix_message << std::endl;
         return true;
@@ -109,9 +110,9 @@ void FixClient::onMessage(const FIX42::ExecutionReport &execution_report, const 
     FIX::OrdStatus order_status;
     FIX::Symbol symbol;
     FIX::Side side;
-    FIX::OrderQty order_qty;
+    FIX::OrderQty order_qty; // filled qty in this single update
     FIX::LastPx last_px;
-    FIX::CumQty cum_qty;
+    FIX::CumQty cum_qty; // cumulated filled qty
     FIX::AvgPx avg_px;
     FIX::LeavesQty leaves_qty;
 

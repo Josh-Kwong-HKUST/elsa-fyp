@@ -48,9 +48,11 @@ private:
     void toApp(FIX::Message &, const FIX::SessionID &) override {};
     void fromAdmin(const FIX::Message & msg, const FIX::SessionID & session_id) override {
         std::cout << "[FixClient] fromAdmin:" << msg << "from session " << session_id << std::endl;
+        crack(msg, session_id);
     };
     void fromApp(const FIX::Message &msg, const FIX::SessionID &session_id) override {
         std::cout << "[FixClient] fromApp:" << msg << "from session " << session_id << std::endl;
+        crack(msg, session_id);
     };
     //
     void onMessage( const FIX42::ExecutionReport&, const FIX::SessionID& session_id) override;
