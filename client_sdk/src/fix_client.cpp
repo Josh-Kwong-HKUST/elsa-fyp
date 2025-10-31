@@ -169,7 +169,3 @@ void FixClient::onMessage(const FIX42::OrderCancelReject &order_cancel_reject_re
     std::cout << "[FixClient] cancel request custom_order_id=" << client_order_id << "rejected, reason = " << reason << std::endl;
     on_order_cancel_rejected(client_order_id, reason);
 }
-
-
-
-
