@@ -40,7 +40,8 @@ private:
         new_order.get(side);
         new_order.get(order_qty);
         new_order.get(ord_type);
-        if (FIX::Price price; new_order.isSet(price)) {
+
+        if (FIX::Price price; ord_type == FIX::OrdType_LIMIT && new_order.isSet(price)) {
             new_order.get(price);
             execution_report.set(FIX::LastPx(price));
             execution_report.set(FIX::AvgPx(price));
