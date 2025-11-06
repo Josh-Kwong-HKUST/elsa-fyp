@@ -1,4 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
+#include <limits>
 
 #include "../src/limit_order_book.h"
 #include "../src/order.h"
@@ -157,6 +158,36 @@ TEST_CASE("Adding order to limit order book", "[lob]") {
         REQUIRE(best_bid.get_quantity() == 5);
         REQUIRE(best_bid.get_side() == Side::Bid);
     }
+
+    SECTION("Adding a partially filled market bid order") {
+        limit_order_book.add_order(67, 100, 10, Side::Ask);
+        limit_order_book.add_order(68, 101, 10, Side::Ask);
+        limit_order_book.add_order(69, 99, 10, Side::Bid);
+        limit_order_book.add_order(70, std::numeric_limits<int>::max(), 25, Side::Bid); // Market order
+
+        REQUIRE(limit_order_book.get_best_order(Side::Ask).has_value() == false);
+        REQUIRE(limit_order_book.get_best_order(Side::Bid).has_value());
+        const Order& best_bid = limit_order_book.get_best_order(Side::Bid).value();
+        REQUIRE(best_bid.get_order_id() == 70);
+        REQUIRE(best_bid.get_price() == std::numeric_limits<int>::max());
+        REQUIRE(best_bid.get_quantity() == 5);
+        REQUIRE(best_bid.get_side() == Side::Bid);
+    }
+
+    SECTION("Adding a partially filled market ask order") {
+        limit_order_book.add_order(67, 100, 10, Side::Bid);
+        limit_order_book.add_order(68, 99, 10, Side::Bid);
+        limit_order_book.add_order(69, 101, 10, Side::Ask);
+        limit_order_book.add_order(70, std::numeric_limits<int>::min(), 25, Side::Ask); // Market order
+
+        REQUIRE(limit_order_book.get_best_order(Side::Bid).has_value() == false);
+        REQUIRE(limit_order_book.get_best_order(Side::Ask).has_value());
+        const Order& best_ask = limit_order_book.get_best_order(Side::Ask).value();
+        REQUIRE(best_ask.get_order_id() == 70);
+        REQUIRE(best_ask.get_price() == std::numeric_limits<int>::min());
+        REQUIRE(best_ask.get_quantity() == 5);
+        REQUIRE(best_ask.get_side() == Side::Ask);
+    }
 }
 
 TEST_CASE("Getting best order from empty limit order book", "[lob]") {
@@ -181,5 +212,19 @@ TEST_CASE("Getting order by ID from limit order book", "[lob]") {
 
     SECTION("Getting non-existing order") {
         REQUIRE(limit_order_book.get_order_by_id(68).has_value() == false);
+    }
+}
+
+TEST_CASE("Cancelling order in limit order book", "[lob]") {
+    LimitOrderBook limit_order_book;
+
+    SECTION("Cancelling non-existing order") {
+        REQUIRE(limit_order_book.cancel_order(67).has_value() == false);
+    }
+
+    SECTION("Cancelling existing order") {
+        limit_order_book.add_order(67, 100, 10, Side::Bid);
+        REQUIRE(limit_order_book.cancel_order(67).has_value());
+        REQUIRE(limit_order_book.get_order_by_id(67).has_value() == false);
     }
 }
