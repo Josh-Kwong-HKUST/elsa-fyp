@@ -4,6 +4,7 @@ add_executable(matching_engine
 
 add_library(matching_engine_lib
         ${CMAKE_CURRENT_SOURCE_DIR}/src/limit_order_book.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/order.cpp
 )
 
 target_link_libraries(matching_engine PRIVATE matching_engine_lib)
