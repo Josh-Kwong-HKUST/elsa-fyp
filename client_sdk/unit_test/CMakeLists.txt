@@ -10,11 +10,18 @@ find_package(LibXml2 REQUIRED)
 find_package(ZLIB REQUIRED)
 
 # Find QuickFIX via pkg-config
-pkg_check_modules(QuickFIX REQUIRED quickfix)
+# pkg_check_modules(QuickFIX REQUIRED quickfix)
+
+# Find QuickFIX in user-installed library paths
+find_library(quickfix 
+  NAMES libquickfix
+  PATHS /usr/local/lib
+)
 
 # Link QuickFIX
 target_link_libraries(sdk_unit_test PUBLIC
         client_sdk
+        quickfix
         ${QuickFIX_LIBRARIES}
         Threads::Threads
         LibXml2::LibXml2
