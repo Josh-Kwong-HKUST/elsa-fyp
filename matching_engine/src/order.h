@@ -18,7 +18,7 @@ public:
     void fill(int fill_quantity);
 
 private:
-    int order_id;
+    const int order_id;
     int price;
     int quantity;
     Side side;
