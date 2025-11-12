@@ -10,3 +10,4 @@ if(BUILD_TESTS)
 endif()
 
 add_subdirectory(client)
+add_subdirectory(client_sdk)
