@@ -11,3 +11,4 @@ endif ()
 
 add_subdirectory(client)
 add_subdirectory(matching_engine)
+add_subdirectory(client_sdk)
