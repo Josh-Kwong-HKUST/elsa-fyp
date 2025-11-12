@@ -1,11 +1,15 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "test_client.h"
 
 int test_fix() {
     try {
-        auto client = new TestClient("/home/josh/repo/elsa-fyp/client_sdk/example_config_client.cfg");
+        fs::path configFileName = "example_config_client.cfg";
+        fs::path pathToConfig = fs::current_path().parent_path() / configFileName;
+        auto client = new TestClient(pathToConfig.string());
         client->connect(5);
         return 0;
     } catch (std::exception& e) {

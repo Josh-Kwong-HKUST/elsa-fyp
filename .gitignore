@@ -1,3 +1,7 @@
 # CMake
 .cache
 .idea
+
+# Builds
+build
+build-test
