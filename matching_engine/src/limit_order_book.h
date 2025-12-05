@@ -14,6 +14,7 @@ public:
     std::expected<void, std::string> cancel_order(int order_id);
     [[nodiscard]] std::expected<std::reference_wrapper<const Order>, std::string> get_best_order(Side side) const;
     [[nodiscard]] std::expected<std::reference_wrapper<const Order>, std::string> get_order_by_id(int order_id) const;
+    void print_book() const;
 
 private:
     std::map<int, std::list<Order>> bids;

@@ -1,6 +1,7 @@
 #include <format>
 #include <expected>
 #include <limits>
+#include <iostream>
 
 #include "limit_order_book.h"
 
@@ -96,4 +97,26 @@ std::expected<std::reference_wrapper<const Order>, std::string> LimitOrderBook::
         return std::unexpected(std::format("Order ID {} not found in order book", order_id));
     }
     return *(it->second);
+}
+
+void LimitOrderBook::print_book() const {
+    std::cout << "Order Book:" << std::endl;
+
+    std::cout << "Asks:" << std::endl;
+    for (auto it = asks.rbegin(); it != asks.rend(); ++it) {
+        int price = it->first;
+        const auto& orders = it->second;
+        for (const auto& order : orders) {
+            std::cout << "Order ID: " << order.get_order_id() << ", Price: " << price
+                      << ", Quantity: " << order.get_quantity() << ", Side: Ask" << std::endl;
+        }
+    }
+
+    std::cout << "Bids:" << std::endl;
+    for (const auto& [price, orders] : bids) {
+        for (const auto& order : orders) {
+            std::cout << "Order ID: " << order.get_order_id() << ", Price: " << price
+                      << ", Quantity: " << order.get_quantity() << ", Side: Bid" << std::endl;
+        }
+    }
 }
