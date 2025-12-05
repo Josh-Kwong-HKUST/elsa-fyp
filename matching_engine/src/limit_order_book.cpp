@@ -102,6 +102,7 @@ std::expected<std::reference_wrapper<const Order>, std::string> LimitOrderBook::
 void LimitOrderBook::print_book() const {
     std::cout << "Order Book:" << std::endl;
 
+    std::cout << "------------------------" << std::endl;
     std::cout << "Asks:" << std::endl;
     for (auto it = asks.rbegin(); it != asks.rend(); ++it) {
         int price = it->first;

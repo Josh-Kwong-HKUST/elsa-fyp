@@ -1,6 +1,6 @@
 #include "quickfix/config.h"
 
-#include "../src/gatewayApplication.h"
+#include "../gateway/src/gatewayApplication.h"
 #include "quickfix/FileStore.h"
 #include "quickfix/SessionSettings.h"
 #include "quickfix/SocketAcceptor.h"
@@ -27,6 +27,7 @@ int main(int argc, char **argv)
         FIX::SocketAcceptor acceptor(application, storeFactory, settings, logFactory);
 
         acceptor.start();
+        // CLI vis tool
         while (true)
         {
             std::cout << "Enter command (#orders, #quit): ";
@@ -43,8 +44,8 @@ int main(int argc, char **argv)
             }
             else
             {
-                std::cout << "Unknown command" << std::endl;
-                break;
+                std::cout << "Unknown command, try again." << std::endl;
+                continue;
             }
 
             std::cout << std::endl;

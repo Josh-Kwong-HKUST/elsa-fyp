@@ -39,11 +39,6 @@ void Application::onMessage(const FIX42::NewOrderSingle &message, const FIX::Ses
 
     try
     {
-        if (timeInForce != FIX::TimeInForce_DAY)
-        {
-            throw std::logic_error("Unsupported TIF, use Day");
-        }
-
         // TODO: Requires type conversion handling here. The fields are double in FIX.
         // For simplicity, we are using int in the internal Order representation.
         Order order{std::stoi(clOrdID), price, orderQty, convert(side)};
